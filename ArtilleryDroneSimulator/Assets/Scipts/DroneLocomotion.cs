@@ -6,6 +6,8 @@ using static UnityEngine.InputSystem.InputAction;
 
 public class DroneLocomotion : MonoBehaviour
 {
+    public static DroneLocomotion Instance { get; private set; }
+
     [Header("Camera")]
     [SerializeField] private float cameraRotationSpeed;
     [SerializeField] private float minCameraAngle;
@@ -23,10 +25,20 @@ public class DroneLocomotion : MonoBehaviour
 
     private Rigidbody rb;
     private float camAngle;
+    private bool isFunctioningBlocked;
 
     private void Awake()
     {
+        if(Instance != null)
+        {
+            Debug.Log("more than one Drone in scene");
+            Destroy(gameObject);
+            return;
+        }
+        Instance = this;
+
         rb = GetComponent<Rigidbody>();
+        isFunctioningBlocked = false;
     }
 
     private void FixedUpdate()
@@ -76,9 +88,20 @@ public class DroneLocomotion : MonoBehaviour
         }
     }
 
+    public void SetFunctioningBlocked(bool value)
+    {
+        isFunctioningBlocked = value;
+    }
+
     #region InputEvents
     public void OnHorizontalMove(CallbackContext context)
     {
+        if (isFunctioningBlocked)
+        {
+            moveDirection = Vector3.zero;
+            return;
+        }
+
         Vector2 vector = context.ReadValue<Vector2>();
         moveDirection.x = vector.x;
         moveDirection.z = vector.y;
@@ -86,11 +109,21 @@ public class DroneLocomotion : MonoBehaviour
 
     public void OnVerticalMove(CallbackContext context)
     {
+        if (isFunctioningBlocked)
+        {
+            moveDirection = Vector3.zero;
+            return;
+        }
         moveDirection.y = context.ReadValue<float>();
     }
 
     public void OnRotate(CallbackContext context)
     {
+        if (isFunctioningBlocked)
+        {
+            rotation = Vector3.zero;
+            return;
+        }
         Vector2 vector = context.ReadValue<Vector2>();
         rotation.y = vector.x;
         rotation.x = -vector.y;
