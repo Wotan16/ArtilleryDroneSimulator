@@ -21,7 +21,7 @@ public class Bullet : MonoBehaviour
     private void Update()
     {
         currentDistance += speed * Time.deltaTime;
-        float height = ArtilleryController.Instance.curve.Evaluate(currentDistance/distance) * distance;
+        float height = ArtilleryController.Instance.ballisticCurve.Evaluate(currentDistance/distance) * distance;
         Height = height;
         Vector3 lenghtVector = directionVector * currentDistance;
         lenghtVector.y = height;

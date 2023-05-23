@@ -6,7 +6,7 @@ public class ArtilleryController : MonoBehaviour
 {
     public static ArtilleryController Instance { get; private set; }
 
-    public AnimationCurve curve;
+    public AnimationCurve ballisticCurve;
     [SerializeField] private Transform bulletPrefab;
 
     public Transform target;
@@ -30,11 +30,11 @@ public class ArtilleryController : MonoBehaviour
         }
     }
 
-    private void LaunchBullet(Vector3 targetPoint)
+    public void LaunchBullet(Vector3 targetPoint)
     {
         float distance = (targetPoint - transform.position).magnitude;
         Transform bulletTransform = Instantiate(bulletPrefab, transform.position, Quaternion.identity);
         Bullet bullet = bulletTransform.GetComponent<Bullet>();
-        bullet.SetParams(curve, distance, targetPoint);
+        bullet.SetParams(ballisticCurve, distance, targetPoint);
     }
 }
