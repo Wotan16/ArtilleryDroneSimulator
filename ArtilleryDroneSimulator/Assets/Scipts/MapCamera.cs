@@ -12,6 +12,7 @@ public class MapCamera : MonoBehaviour
     [SerializeField] private float minSize;
     [SerializeField] private float maxSize;
     [SerializeField] private float speed;
+    [SerializeField] private float rotationSpeed;
 
     [SerializeField] private Transform mapBottomLeftTransform;
     [SerializeField] private Transform mapUpRightTransform;
@@ -21,7 +22,11 @@ public class MapCamera : MonoBehaviour
 
     private Vector2 moveDirection;
 
+    [SerializeField] private float sightBaseSize;
     [SerializeField] private GameObject mapUIObject;
+    [SerializeField] private Transform sightTransform;
+
+    private float rotationDirection;
 
     private void Awake()
     {
@@ -41,17 +46,33 @@ public class MapCamera : MonoBehaviour
         MoveCamera();
     }
 
+    private void FixedUpdate()
+    {
+        Rotate();
+    }
+
+    private void Rotate()
+    {
+        if (rotationDirection == 0)
+            return;
+
+        float value = rotationSpeed * rotationDirection;
+        Vector3 rotation = transform.rotation.eulerAngles + new Vector3(0, 0, value);
+        transform.rotation = Quaternion.Euler(rotation);
+    }
+
     private void MoveCamera()
     {
         if (moveDirection == Vector2.zero)
             return;
 
-        Vector3 newPosition = transform.position + new Vector3(moveDirection.x, 0, moveDirection.y) * speed * Time.deltaTime;
+        Vector3 rotation = transform.rotation.eulerAngles;
+        rotation.x = 0;
+        Vector3 moveVector = Quaternion.Euler(rotation) * new Vector3(moveDirection.x, 0, moveDirection.y);
+        Vector3 newPosition = transform.position + moveVector * speed * Time.deltaTime;
 
-        newPosition.x = Mathf.Clamp(newPosition.x, mapBottomLeftTransform.position.x + mapCamera.orthographicSize * 1.8f,
-            mapUpRightTransform.position.x - mapCamera.orthographicSize * 1.8f);
-        newPosition.z = Mathf.Clamp(newPosition.z, mapBottomLeftTransform.position.z + mapCamera.orthographicSize,
-            mapUpRightTransform.position.z - mapCamera.orthographicSize);
+        newPosition.x = Mathf.Clamp(newPosition.x, mapBottomLeftTransform.position.x, mapUpRightTransform.position.x);
+        newPosition.z = Mathf.Clamp(newPosition.z, mapBottomLeftTransform.position.z, mapUpRightTransform.position.z);
 
         transform.position = newPosition;
     }
@@ -71,10 +92,26 @@ public class MapCamera : MonoBehaviour
 
     public void OnSizeChange(CallbackContext context)
     {
+        if (!context.performed)
+            return;
+
         float newSize = mapCamera.orthographicSize;
         newSize += 0.25f * context.ReadValue<float>();
         newSize = Mathf.Clamp(newSize, minSize, maxSize);
         mapCamera.orthographicSize = newSize;
+
+        sightTransform.localScale = new Vector3(sightBaseSize * newSize, sightBaseSize * newSize, 1);
+    }
+
+    public void OnRotate(CallbackContext context)
+    {
+        if (context.canceled)
+        {
+            rotationDirection = 0;
+            return;
+        }
+
+        rotationDirection = context.ReadValue<float>();
     }
     #endregion
 

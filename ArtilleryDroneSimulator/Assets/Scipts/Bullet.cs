@@ -5,12 +5,12 @@ using UnityEngine;
 public class Bullet : MonoBehaviour
 {
     [SerializeField] private float speed;
-    private AnimationCurve curve;
     private float distance;
     private float currentDistance;
     private Vector3 directionVector;
     private Rigidbody myRigidbody;
-    private float Height = 0;
+
+    [SerializeField] private Transform explosionPrefab;
 
     private void Start()
     {
@@ -18,20 +18,21 @@ public class Bullet : MonoBehaviour
         currentDistance = 0;
     }
 
-    private void Update()
+    private void FixedUpdate()
     {
-        currentDistance += speed * Time.deltaTime;
+        currentDistance += speed * Time.fixedDeltaTime;
         float height = ArtilleryController.Instance.ballisticCurve.Evaluate(currentDistance/distance) * distance;
-        Height = height;
         Vector3 lenghtVector = directionVector * currentDistance;
         lenghtVector.y = height;
         Vector3 moveVector = ArtilleryController.Instance.transform.position + lenghtVector;
         myRigidbody.MovePosition(moveVector);
+
+        if (currentDistance >= distance * 0.97f)
+            speed = 10f;
     }
 
-    public void SetParams(AnimationCurve curve, float distance, Vector3 targetPoint)
+    public void SetParams(float distance, Vector3 targetPoint)
     {
-        this.curve = curve;
         this.distance = distance;
         directionVector = (targetPoint - transform.position).normalized;
         directionVector.y = 0;
@@ -39,6 +40,7 @@ public class Bullet : MonoBehaviour
 
     private void OnCollisionEnter(Collision collision)
     {
+        Instantiate(explosionPrefab, transform.position, Quaternion.identity);
         Destroy(gameObject);
     }
 }

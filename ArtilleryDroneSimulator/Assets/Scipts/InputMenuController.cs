@@ -9,6 +9,7 @@ public class InputMenuController : MonoBehaviour
     [SerializeField] private Button coordinatesButton;
     [SerializeField] private TMP_InputField XField;
     [SerializeField] private TMP_InputField YField;
+    [SerializeField] private LayerMask terrainMask;
 
     private void Start()
     {
@@ -20,11 +21,11 @@ public class InputMenuController : MonoBehaviour
         if (!float.TryParse(XField.text, out float x))
             return;
 
-        if (!float.TryParse(XField.text, out float z))
+        if (!float.TryParse(YField.text, out float z))
             return;
 
-        Vector3 target = new Vector3(x, ArtilleryController.Instance.transform.position.y, z);
+        Physics.Raycast(new Vector3(x, 50f, z), Vector3.down, out RaycastHit hit, 200f, terrainMask);
 
-        ArtilleryController.Instance.LaunchBullet(target);
+        ArtilleryController.Instance.LaunchBullet(hit.point);
     }
 }

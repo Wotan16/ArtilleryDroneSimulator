@@ -32,9 +32,10 @@ public class ArtilleryController : MonoBehaviour
 
     public void LaunchBullet(Vector3 targetPoint)
     {
+        transform.position = new Vector3(transform.position.x, targetPoint.y + 0.5f, transform.position.z);
         float distance = (targetPoint - transform.position).magnitude;
         Transform bulletTransform = Instantiate(bulletPrefab, transform.position, Quaternion.identity);
         Bullet bullet = bulletTransform.GetComponent<Bullet>();
-        bullet.SetParams(ballisticCurve, distance, targetPoint);
+        bullet.SetParams(distance, targetPoint);
     }
 }

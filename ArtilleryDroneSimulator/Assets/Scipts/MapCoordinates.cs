@@ -5,7 +5,7 @@ using UnityEngine;
 
 public class MapCoordinates : MonoBehaviour
 {
-    [SerializeField] private TextMeshPro coordinates;
+    [SerializeField] private TextMeshProUGUI coordinates;
     [SerializeField] private Transform sightTransform;
 
     private void Update()
