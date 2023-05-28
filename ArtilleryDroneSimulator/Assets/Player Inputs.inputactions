@@ -158,7 +158,7 @@
                 {
                     "name": "negative",
                     "id": "ea51e541-60e0-4529-bab7-00972310ce34",
-                    "path": "<Keyboard>/ctrl",
+                    "path": "<Keyboard>/shift",
                     "interactions": "",
                     "processors": "",
                     "groups": "",
@@ -268,7 +268,7 @@
                     "isPartOfComposite": true
                 },
                 {
-                    "name": "1D Axis",
+                    "name": "Plus/minus",
                     "id": "6ea4d683-6c3d-44cf-97e2-dd90aae381ca",
                     "path": "1DAxis",
                     "interactions": "",
@@ -293,6 +293,39 @@
                     "name": "positive",
                     "id": "87bb6e5e-671d-4a8e-a27d-bf746f9b19d1",
                     "path": "<Keyboard>/minus",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "SizeChange",
+                    "isComposite": false,
+                    "isPartOfComposite": true
+                },
+                {
+                    "name": "Shift/space",
+                    "id": "1df1c600-fa93-44e2-943b-6e171d011dcc",
+                    "path": "1DAxis",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "SizeChange",
+                    "isComposite": true,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "negative",
+                    "id": "7048616c-0747-4f2f-ba02-d50d370d8d35",
+                    "path": "<Keyboard>/shift",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "SizeChange",
+                    "isComposite": false,
+                    "isPartOfComposite": true
+                },
+                {
+                    "name": "positive",
+                    "id": "41899724-a777-4710-a39f-b1159391a3fd",
+                    "path": "<Keyboard>/space",
                     "interactions": "",
                     "processors": "",
                     "groups": "",

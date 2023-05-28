@@ -114,14 +114,4 @@ public class MapCamera : MonoBehaviour
         rotationDirection = context.ReadValue<float>();
     }
     #endregion
-
-    private void OnEnable()
-    {
-        mapUIObject.SetActive(true);
-    }
-
-    private void OnDisable()
-    {
-        mapUIObject.SetActive(false);
-    }
 }
