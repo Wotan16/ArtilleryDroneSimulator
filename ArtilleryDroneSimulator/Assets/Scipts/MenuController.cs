@@ -5,11 +5,21 @@ using static UnityEngine.InputSystem.InputAction;
 
 public class MenuController : MonoBehaviour
 {
-    private bool isMapActive = false;
+    private bool isMapActive = true;
+    [SerializeField] private GameObject mapUIObject;
 
     private void Start()
     {
         MapCamera.Instance.enabled = isMapActive;
+        ChangeState();
+    }
+
+    private void ChangeState()
+    {
+        isMapActive = !isMapActive;
+        DroneLocomotion.Instance.enabled = !isMapActive;
+        MapCamera.Instance.gameObject.SetActive(isMapActive);
+        mapUIObject.SetActive(isMapActive);
     }
 
     public void OnMapButtonPressed(CallbackContext context)
@@ -17,8 +27,6 @@ public class MenuController : MonoBehaviour
         if (!context.performed)
             return;
 
-        isMapActive = !isMapActive;
-        DroneLocomotion.Instance.enabled = !isMapActive;
-        MapCamera.Instance.enabled = isMapActive;
+        ChangeState();
     }
 }
