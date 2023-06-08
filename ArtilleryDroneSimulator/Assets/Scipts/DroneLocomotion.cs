@@ -24,7 +24,6 @@ public class DroneLocomotion : MonoBehaviour
     [SerializeField] private Transform camVisual;
 
     private Rigidbody rb;
-    private float camAngle;
     private bool isFunctioningBlocked;
 
     private void Awake()
@@ -75,7 +74,6 @@ public class DroneLocomotion : MonoBehaviour
 
 
         camVisual.rotation = Quaternion.Euler(new Vector3(angle, camVisualRotation.y, camVisualRotation.z));
-        camAngle = angle;
     }
 
     private void HandleHorizontalRotation()

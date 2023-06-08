@@ -5,11 +5,12 @@ using UnityEngine;
 public class Bullet : MonoBehaviour
 {
     [SerializeField] private float speed;
+    [SerializeField] private float radius;
     private float distance;
     private float currentDistance;
     private Vector3 directionVector;
     private Rigidbody myRigidbody;
-
+    [SerializeField] private LayerMask enemyMask;
     [SerializeField] private Transform explosionPrefab;
 
     private void Start()
@@ -41,6 +42,20 @@ public class Bullet : MonoBehaviour
     private void OnCollisionEnter(Collision collision)
     {
         Instantiate(explosionPrefab, transform.position, Quaternion.identity);
+
+        Collider[] enemies = Physics.OverlapSphere(transform.position, radius, enemyMask);
+        foreach (Collider coll in enemies)  
+        {
+            Enemy enemy = coll.GetComponent<Enemy>();
+            enemy.Die();
+        }
+
         Destroy(gameObject);
+    }
+
+    private void OnDrawGizmos()
+    {
+        Gizmos.color = Color.red;
+        Gizmos.DrawWireSphere(transform.position, radius);
     }
 }

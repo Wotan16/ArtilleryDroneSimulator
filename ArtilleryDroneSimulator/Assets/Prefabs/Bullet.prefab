@@ -48,6 +48,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   speed: 100
+  radius: 8
+  enemyMask:
+    serializedVersion: 2
+    m_Bits: 512
   explosionPrefab: {fileID: 5498639355765555548, guid: d053ec09436518f44ad7a9a4ec1a21b5,
     type: 3}
 --- !u!54 &6375237919388139394
