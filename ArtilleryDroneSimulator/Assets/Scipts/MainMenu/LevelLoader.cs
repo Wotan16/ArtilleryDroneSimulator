@@ -3,10 +3,13 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
-public class LevelLoader : MonoBehaviour
+namespace Menu
 {
-    public void LoadFirstLevel()
+    public class LevelLoader : MonoBehaviour
     {
-        SceneManager.LoadScene("SampleScene");
+        public void LoadFirstLevel()
+        {
+            SceneManager.LoadScene("SampleScene");
+        }
     }
 }
