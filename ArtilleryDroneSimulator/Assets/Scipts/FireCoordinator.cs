@@ -6,12 +6,11 @@ public class FireCoordinator : MonoBehaviour
 {
     public static FireCoordinator Instance { get; private set; }
 
-    private bool isProcessStarted;
     private Vector3 targetPosition;
     private Vector3 previousHitPosition;
 
     [SerializeField] private float radius;
-    private float currentRadius;
+    [SerializeField] private float mistakePower;
 
     private void Awake()
     {
@@ -24,39 +23,32 @@ public class FireCoordinator : MonoBehaviour
         Instance = this;
     }
 
-    public void StartAdjustmentProcess(Vector3 target)
+    public void FireFirstProjectile(Vector3 targetPoint)
     {
-        currentRadius = radius;
-        isProcessStarted = true;
-        targetPosition = target;
-
-        Vector3 verticalPointInCirle = Random.insideUnitCircle * radius * 1.5f;
+        Vector3 verticalPointInCirle = Random.insideUnitCircle * radius;
         Vector3 horizontalPointInCirle = new Vector3(verticalPointInCirle.x, 0, verticalPointInCirle.y);
-        ArtilleryController.Instance.LaunchBullet(target + horizontalPointInCirle);
-        previousHitPosition = target + horizontalPointInCirle;
+        ArtilleryController.Instance.LaunchBullet(targetPoint + horizontalPointInCirle);
+        previousHitPosition = targetPoint + horizontalPointInCirle;
     }
 
     public void SetHitPosition(Vector3 hitPosition)
     {
-        if (!isProcessStarted)
-            return;
-
-        Debug.Log("distance " + Vector3.Distance(hitPosition, previousHitPosition));
-        if (Vector3.Distance(hitPosition, previousHitPosition) < 15f)
-            currentRadius *= 0.75f;
-        else
-            currentRadius *= 1.15f;
-
-        currentRadius = Mathf.Clamp(currentRadius, 0f, radius * 1.5f);
-
-        Vector3 verticalPointInCirle = Random.insideUnitCircle * currentRadius;
-        Vector3 horizontalPointInCirle = new Vector3(verticalPointInCirle.x, 0, verticalPointInCirle.y);
-        ArtilleryController.Instance.LaunchBullet(targetPosition + horizontalPointInCirle);
-        previousHitPosition = targetPosition + horizontalPointInCirle;
+        Vector3 corectionVector = targetPosition - hitPosition;
+        corectionVector += Random.Range(-mistakePower, mistakePower) * corectionVector;
+        Vector3 firePosition = previousHitPosition + corectionVector;
+        ArtilleryController.Instance.LaunchBullet(firePosition);
+        previousHitPosition = firePosition;
     }
 
     public void StopAdjustmentProcess()
     {
-        isProcessStarted = false;
+        targetPosition = Vector3.zero;
+        previousHitPosition = Vector3.zero;
+    }
+
+    public void SetTarget(Vector3 target)
+    {
+        targetPosition = target;
     }
 }
+
