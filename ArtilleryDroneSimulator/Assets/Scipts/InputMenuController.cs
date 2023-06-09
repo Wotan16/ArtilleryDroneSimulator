@@ -21,6 +21,9 @@ public class InputMenuController : MonoBehaviour
     private void Start()
     {
         currentState = AdjustmentState.WaitingForTarget;
+        HideAllButtons();
+        targetButton.gameObject.SetActive(true);
+        correctionFireButton.gameObject.SetActive(true);
 
         targetButton.onClick.AddListener(() =>
         {
