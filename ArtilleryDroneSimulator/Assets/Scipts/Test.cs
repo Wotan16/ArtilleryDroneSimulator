@@ -9,15 +9,15 @@ public class Test : MonoBehaviour
 
     private void Update()
     {
-        if (Input.GetKeyDown(KeyCode.G))
-        {
-            Collider[] colls = Physics.OverlapSphere(transform.position, radius, mask);
-            foreach(Collider coll in colls)
-            {
-                Debug.Log(coll.name);
-                coll.GetComponent<Enemy>().Die();
-            }
-        }
+        //if (Input.GetKeyDown(KeyCode.G))
+        //{
+        //    Collider[] colls = Physics.OverlapSphere(transform.position, radius, mask);
+        //    foreach(Collider coll in colls)
+        //    {
+        //        Debug.Log(coll.name);
+        //        coll.GetComponent<Enemy>().Die();
+        //    }
+        //}
     }
 
     private void OnDrawGizmos()

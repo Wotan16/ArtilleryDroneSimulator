@@ -46,8 +46,8 @@ public class Bullet : MonoBehaviour
         Collider[] enemies = Physics.OverlapSphere(transform.position, radius, enemyMask);
         foreach (Collider coll in enemies)  
         {
-            Enemy enemy = coll.GetComponent<Enemy>();
-            enemy.Die();
+            IDamagable damagedObject = coll.GetComponent<IDamagable>();
+            damagedObject.OnDamaged();
         }
 
         Destroy(gameObject);

@@ -8,8 +8,10 @@ public class FireCoordinator : MonoBehaviour
 
     private Vector3 targetPosition;
     private Vector3 previousHitPosition;
-
+     
+    //рад≥ус у €кому впаде перший випущений снар€д
     [SerializeField] private float radius;
+    //сила фактору людськоњ помилки
     [SerializeField] private float mistakePower;
 
     private void Awake()
